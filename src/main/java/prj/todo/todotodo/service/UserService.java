@@ -3,6 +3,7 @@ package prj.todo.todotodo.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import prj.todo.todotodo.dto.AddUserRequest;
+import prj.todo.todotodo.dto.LoginUserRequest;
 import prj.todo.todotodo.entity.User;
 import prj.todo.todotodo.repository.UserRepository;
 
@@ -27,6 +28,15 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    // 로그인
+    public User loginUser(LoginUserRequest request) {
+        User user = userRepository.findByUserIdAndUserPw(request.getUserId(), request.getUserPw());
+
+        if(user == null)
+            return null;
+
+        return user;
+    }
 
 
 }
