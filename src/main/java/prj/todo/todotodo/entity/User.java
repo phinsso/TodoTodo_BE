@@ -1,9 +1,15 @@
 package prj.todo.todotodo.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "users")
+@NoArgsConstructor
+@Getter
 public class User {
 
     @Id
@@ -14,4 +20,11 @@ public class User {
 
     @Column
     private String userPw; // 유저 패스워드
+
+    @Builder
+    public User(String userId, String userPw, String userName) {
+        this.userId = userId;
+        this.userPw = userPw;
+        this.userName = userName;
+    }
 }
