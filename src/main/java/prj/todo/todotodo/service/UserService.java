@@ -1,9 +1,9 @@
 package prj.todo.todotodo.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import prj.todo.todotodo.dto.AddUserRequest;
-import prj.todo.todotodo.dto.LoginUserRequest;
+import prj.todo.todotodo.dto.JoinUserRequestDTO;
 import prj.todo.todotodo.entity.User;
 import prj.todo.todotodo.repository.UserRepository;
 
@@ -11,32 +11,27 @@ import prj.todo.todotodo.repository.UserRepository;
 public class UserService {
 
     @Autowired
-    private UserRepository userRepository; // user 리파지토리 객체 주입
+    private UserRepository userRepository;
 
-    // 유저 단일 조회 (user 테이블에 해당 id를 가진 데이터가 있는지)
-    public User getUserById(String userId) {
-        return userRepository.findById(userId).orElse(null);
-    }
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    // 유저 생성 (회원가입)
-    public User joinUser(AddUserRequest request) {
-        if (getUserById(request.getUserId()) != null) { // 테이블에 이미 존재하는 id일 경우 null 반환
+    public User joinProcess(JoinUserRequestDTO dto) {
+
+        // db에 이미 동일한 userId를 가진 유저가 존재하는지 검사
+        boolean isUser = userRepository.existsByUserId(dto.getUserId());
+        if(isUser) {
             return null;
         }
 
-        User user = request.toEntity();
-        return userRepository.save(user);
+        User data = new User();
+
+        data.setUserId(dto.getUserId());
+        data.setUsername(dto.getUsername());
+        data.setPassword(bCryptPasswordEncoder.encode(dto.getPassword()));
+        data.setRole("ROLE_USER");
+
+        return userRepository.save(data);
+
     }
-
-    // 로그인
-    public User loginUser(LoginUserRequest request) {
-        User user = userRepository.findByUserIdAndUserPw(request.getUserId(), request.getUserPw());
-
-        if(user == null)
-            return null;
-
-        return user;
-    }
-
-
 }

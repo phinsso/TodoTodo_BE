@@ -7,6 +7,7 @@ import prj.todo.todotodo.entity.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, String> {
 
-    // 로그인시 사용되는 메서드
-    User findByUserIdAndUserPw(String userId, String userPw);
+    boolean existsByUserId(String userId);
+
+    User findByUserId(String userId);
 }
