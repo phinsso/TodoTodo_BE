@@ -13,7 +13,7 @@ public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "category_id")
-    private Long categoryId; // 카테고리 기본키
+    private Long id; // 카테고리 기본키
 
     @Column(nullable = false, unique = true)
     private String name; // 카테고리 이름 (종류)

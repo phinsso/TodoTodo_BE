@@ -27,9 +27,7 @@ public class AuthApiController {
     public ResponseEntity<String> registerMember(@RequestBody RegisterMemberRequest request) {
         Member registered = authService.register(request);
 
-        return (registered != null) ?
-            ResponseEntity.status(HttpStatus.OK).body("회원가입에 실패했습니다.") :
-            ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        return ResponseEntity.status(HttpStatus.CREATED).body("회원가입에 성공했습니다");
     }
 
     @GetMapping("/todos/session-id")
