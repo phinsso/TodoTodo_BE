@@ -1,28 +1,29 @@
 package prj.todo.todotodo.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import prj.todo.todotodo.dto.CustomUserDetails;
-import prj.todo.todotodo.entity.User;
-import prj.todo.todotodo.repository.UserRepository;
+import prj.todo.todotodo.entity.CustomUser;
+import prj.todo.todotodo.entity.Member;
+import prj.todo.todotodo.repository.MemberRepository;
+
+import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
+// UserDetailsService: 스프링 시큐리티에서 제공하는 사용자의 정보를 가져오는 인터페이스
 public class CustomUserDetailsService implements UserDetailsService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final MemberRepository memberRepository;
 
-    // 해당 userId를 가진 유저의 정보를 조회해서 UserDetails 타입으로 리턴
+    // 사용자의 정보를 불러와 UserDetails 타입으로 return
     @Override
-    public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
-        User userData = userRepository.findByUserId(userId);
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Optional<Member> member = memberRepository.findByUsername(username);
 
-        if(userData != null) {
-            return new CustomUserDetails(userData);
-        }
-        return null;
+        return member.map(CustomUser::new)
+                .orElseThrow(() -> new UsernameNotFoundException(username + ": 해당 유저를 찾을 수 없습니다"));
     }
 }

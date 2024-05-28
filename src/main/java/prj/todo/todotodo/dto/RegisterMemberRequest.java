@@ -1,14 +1,10 @@
 package prj.todo.todotodo.dto;
 
-
 import lombok.Getter;
-import lombok.Setter;
 
-@Setter
 @Getter
-public class JoinUserRequestDTO {
-    private String userId;
+public class RegisterMemberRequest {
     private String username;
     private String password;
+    private String nickname;
 }
-

@@ -3,31 +3,29 @@ package prj.todo.todotodo.entity;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 @Entity
 public class Todo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long todoId; // 투두 기본키
+    @Column(name = "todo_id")
+    private Long id; // 할 일 기본키
 
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id", nullable = false)
+    private Member member;
 
+    private String title; // 할 일 제목
 
-    @Column
-    private String title; // 투두 이름
-
-    @Column
+    @Column(name = "due_date")
     private LocalDate dueDate; // 마감일
 
-    @Column
-    private boolean completed; // 완료 여부
+    @Column(name = "is_completed")
+    private boolean isCompleted; // 할 일의 완료 여부
 
 }

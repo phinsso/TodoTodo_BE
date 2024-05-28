@@ -19,20 +19,24 @@ public class SecurityConfig {
 
     // 각 경로에 따른 접근 권한 설정
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-
-//        http
-//                .authorizeHttpRequests((auth) -> auth
-//                        .requestMatchers("/", "login", "/join", "/h2-console").permitAll() // 해당 경로에 대해 모든 사용자의 접근을 허용
-//                        .requestMatchers("/admin").hasRole("ADMIN") // 사용자가 주어진 역할이 있다면 접근 허용
-//                        .requestMatchers("/my/**").hasAnyRole("ADMIN", "USER")
-//                        .anyRequest().authenticated() // 이외의 경로에 대해서는 로그인한 사용자만 접근 허용
-//                );
-
-        http
+    public SecurityFilterChain securityfilterChain(HttpSecurity httpSecurity) throws Exception {
+        httpSecurity
+                .authorizeHttpRequests((auth) -> auth
+                        .requestMatchers("/todos/**").authenticated()
+                        .anyRequest().permitAll()
+                )
+                .formLogin((form) -> form
+                        // 로그인을 처리할 URL
+                        .loginProcessingUrl("/login")
+                        // 로그인에 성공하면 (인증이 되면) 리다이렉트 될 URL
+                        // true: 로그인 전에 접근하려던 페이지가 있을 경우 그 페이지로 리다이렉트되게 함.
+                        // .defaultSuccessUrl("/todos", true)
+                        .successHandler(new LoginSuccessHandler())
+                        .failureHandler(new LoginFailHandler())
+                )
                 .csrf((auth) -> auth.disable());
 
-        return http.build();
+        return httpSecurity.build();
     }
 }
 
