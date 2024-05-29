@@ -30,7 +30,8 @@ public class AuthApiController {
         return ResponseEntity.status(HttpStatus.CREATED).body("회원가입에 성공했습니다");
     }
 
-    @GetMapping("/todos/session-id")
+    // 세션 확인용 메서드
+    @GetMapping("/session-id")
     public String getSessionId(HttpSession session) {
         String sessionId = session.getId();
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

@@ -6,4 +6,6 @@ import prj.todo.todotodo.entity.Category;
 
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, Long> {
+
+    boolean existsByNameAndMemberUsername(String name, String username);
 }

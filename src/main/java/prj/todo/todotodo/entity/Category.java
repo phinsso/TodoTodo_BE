@@ -15,6 +15,16 @@ public class Category {
     @Column(name = "category_id")
     private Long id; // 카테고리 기본키
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id", nullable = false)
+    private Member member;
+
     @Column(nullable = false, unique = true)
     private String name; // 카테고리 이름 (종류)
+
+    @Builder
+    public Category(Member member, String name) {
+        this.member = member;
+        this.name = name;
+    }
 }
