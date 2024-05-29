@@ -1,9 +1,6 @@
 package prj.todo.todotodo.controller;
 
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -11,24 +8,22 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import prj.todo.todotodo.dto.CreateCategoryRequest;
+import prj.todo.todotodo.dto.CreateTodoRequest;
 import prj.todo.todotodo.entity.Category;
-import prj.todo.todotodo.service.CategoryService;
+import prj.todo.todotodo.entity.Todo;
+import prj.todo.todotodo.service.TodoService;
 
 @RestController
 @RequiredArgsConstructor
-@Slf4j
-public class CategoryController {
+public class TodoController {
+    private final TodoService todoService;
 
-    private final CategoryService categoryService;
-
-    // 카테고리 생성
-    @PostMapping("/todo/categories")
-    public ResponseEntity<String> createCategory(@RequestBody CreateCategoryRequest request) {
+    @PostMapping("/todo/todos")
+    public ResponseEntity<String> createTodo(@RequestBody CreateTodoRequest request) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
-        Category created = categoryService.createCategory(request, username);
+        Todo created = todoService.createTodo(request, username);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body("카테고리가 추가되었습니다.");
+        return ResponseEntity.status(HttpStatus.CREATED).body("투두가 추가되었습니다.");
     }
 }

@@ -1,6 +1,7 @@
 package prj.todo.todotodo.entity;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 
 import java.time.LocalDate;
 
@@ -27,5 +28,14 @@ public class Todo {
 
     @Column(name = "is_completed")
     private boolean isCompleted; // 할 일의 완료 여부
+
+    @Builder
+    public Todo (Category category, Member member, String title, LocalDate dueDate, boolean isCompleted) {
+        this.category = category;
+        this.member = member;
+        this.title = title;
+        this.dueDate = dueDate;
+        this.isCompleted = isCompleted;
+    }
 
 }
