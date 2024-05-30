@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import prj.todo.todotodo.dto.CreateTodoRequest;
+import prj.todo.todotodo.dto.TodosByCategoryResponse;
 import prj.todo.todotodo.entity.Category;
 import prj.todo.todotodo.entity.Member;
 import prj.todo.todotodo.entity.Todo;
@@ -13,7 +14,9 @@ import prj.todo.todotodo.repository.MemberRepository;
 import prj.todo.todotodo.repository.TodoRepository;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -41,5 +44,17 @@ public class TodoService {
                 .build();
 
         return todoRepository.save(todo);
+    }
+
+    public List<TodosByCategoryResponse> getTodosByCategory(String username) {
+        Member member = memberRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("해당 아이디를 가진 사용자가 존재하지 않습니다."));
+
+        List<Category> categories = categoryRepository.findAllByMemberId(member.getId());
+
+        return categories.stream()
+                .map(TodosByCategoryResponse::new)
+                .collect(Collectors.toList());
+
     }
 }
