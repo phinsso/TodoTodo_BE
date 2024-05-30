@@ -34,6 +34,18 @@ public class SecurityConfig {
                         .successHandler(new LoginSuccessHandler())
                         .failureHandler(new LoginFailHandler())
                 )
+                .logout((logout) -> logout
+                        // 로그아웃을 처리할 URL
+                        .logoutUrl("/logout")
+                        // 로그아웃에 성공하면 리다이렉트 될 URL
+                        .logoutSuccessUrl("/")
+                        // HTTP 세션을 무효화 (지움)
+                        .invalidateHttpSession(true)
+                        // 쿠키를 제거
+                        .deleteCookies("JSESSIONID")
+//                        // csrf 토큰을 무효화
+//                        .clearAuthentication(true)
+                )
                 .csrf((auth) -> auth.disable());
 
         return httpSecurity.build();
