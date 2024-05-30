@@ -7,10 +7,12 @@ import java.util.List;
 
 @Getter
 public class TodosByCategoryResponse {
+    private Long id;
     private String name;
     private List<TodoResponse> todos;
 
     public TodosByCategoryResponse(Category category) {
+        this.id = category.getId();
         this.name = category.getName();
         this.todos = category.getTodos().stream().map(TodoResponse::new).toList();
     }
