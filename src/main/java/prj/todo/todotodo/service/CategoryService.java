@@ -5,9 +5,11 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import prj.todo.todotodo.dto.CategoryResponse;
 import prj.todo.todotodo.dto.CreateCategoryRequest;
+import prj.todo.todotodo.dto.UpdateCategoryRequest;
 import prj.todo.todotodo.entity.Category;
 import prj.todo.todotodo.entity.Member;
 import prj.todo.todotodo.exception.CategoryExistException;
+import prj.todo.todotodo.exception.CategoryNotFoundException;
 import prj.todo.todotodo.repository.CategoryRepository;
 import prj.todo.todotodo.repository.MemberRepository;
 
@@ -49,5 +51,16 @@ public class CategoryService {
         return categories.stream()
                 .map(CategoryResponse::new)
                 .collect(Collectors.toList());
+    }
+
+    public Category updateCategory(Long id, UpdateCategoryRequest request, String username) {
+        Member member = memberRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("해당 아이디를 가진 사용자가 존재하지 않습니다."));
+        Category category = categoryRepository.findByIdAndMemberId(id, member.getId())
+                .orElseThrow(() -> new CategoryNotFoundException("해당 카테고리를 찾을 수 없습니다."));
+
+        category.update(request.getName());
+
+        return categoryRepository.save(category);
     }
 }
