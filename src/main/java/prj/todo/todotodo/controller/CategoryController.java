@@ -27,7 +27,7 @@ public class CategoryController {
     public ResponseEntity<String> createCategory(@RequestBody CreateCategoryRequest request) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
-        Category created = categoryService.createCategory(request, username);
+        categoryService.createCategory(request, username);
 
         return ResponseEntity.status(HttpStatus.CREATED).body("카테고리가 추가되었습니다.");
     }
@@ -45,9 +45,8 @@ public class CategoryController {
     public ResponseEntity<String> editCategory(@PathVariable("id") Long id, @RequestBody UpdateCategoryRequest request) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
-        Category updated = categoryService.updateCategory(id, request, username);
+        categoryService.updateCategory(id, request, username);
 
         return ResponseEntity.status(HttpStatus.OK).body("카테고리가 수정되었습니다");
     }
-
 }

@@ -23,7 +23,7 @@ public class TodoController {
     public ResponseEntity<String> createTodo(@RequestBody CreateTodoRequest request) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
-        Todo created = todoService.createTodo(request, username);
+        todoService.createTodo(request, username);
 
         return ResponseEntity.status(HttpStatus.CREATED).body("투두가 추가되었습니다.");
     }
@@ -42,7 +42,7 @@ public class TodoController {
     public ResponseEntity<String> updateTodos(@PathVariable("id") Long id, @RequestBody UpdateTodoRequest request) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
-        Todo updated = todoService.updateTodo(id, request, username);
+        todoService.updateTodo(id, request, username);
 
         return ResponseEntity.status(HttpStatus.OK).body("투두가 수정되었습니다.");
     }

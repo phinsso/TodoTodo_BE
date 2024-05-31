@@ -36,6 +36,8 @@ public class Category {
     }
 
     public void update(String name) {
-        this.name = name;
+        if(name != null) {
+            this.name = name;
+        }
     }
 }
