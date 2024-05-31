@@ -63,12 +63,20 @@ public class TodoService {
     public Todo updateTodo(Long id, UpdateTodoRequest request, String username) {
         Member member = memberRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("해당 아이디를 가진 사용자가 존재하지 않습니다."));
-
         Todo todo = todoRepository.findByIdAndMemberId(id, member.getId())
                 .orElseThrow(() -> new TodoNotFoundException("해당 투두를 찾을 수 없습니다."));
 
         todo.update(request);
 
         return todoRepository.save(todo);
+    }
+
+    public void deleteTodo(Long id, String username) {
+        Member member = memberRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("해당 아이디를 가진 사용자가 존재하지 않습니다."));
+        Todo todo = todoRepository.findByIdAndMemberId(id, member.getId())
+                .orElseThrow(() -> new TodoNotFoundException("해당 투두를 찾을 수 없습니다"));
+
+        todoRepository.delete(todo);
     }
 }

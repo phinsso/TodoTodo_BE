@@ -54,11 +54,9 @@ public class CategoryController {
     public ResponseEntity<String> deleteCategory(@PathVariable("id") Long id) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
-
         categoryService.deleteCategory(id, username);
 
         return ResponseEntity.status(HttpStatus.OK).body("카테고리가 삭제되었습니다.");
-
     }
 
 }

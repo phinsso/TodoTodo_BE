@@ -39,11 +39,20 @@ public class TodoController {
     }
 
     @PatchMapping("/todo/todos/{id}")
-    public ResponseEntity<String> updateTodos(@PathVariable("id") Long id, @RequestBody UpdateTodoRequest request) {
+    public ResponseEntity<String> updateTodo(@PathVariable("id") Long id, @RequestBody UpdateTodoRequest request) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
         todoService.updateTodo(id, request, username);
 
         return ResponseEntity.status(HttpStatus.OK).body("투두가 수정되었습니다.");
+    }
+
+    @DeleteMapping("/todo/todos/{id}")
+    public ResponseEntity<String> deleteTodo(@PathVariable("id") Long id) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();;
+        String username = authentication.getName();
+        todoService.deleteTodo(id, username);
+
+        return ResponseEntity.status(HttpStatus.OK).body("투두가 삭제되었습니다.");
     }
 }
