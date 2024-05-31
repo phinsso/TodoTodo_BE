@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import prj.todo.todotodo.dto.UpdateTodoRequest;
 
 import java.time.LocalDate;
 
@@ -40,6 +41,15 @@ public class Todo {
         this.title = title;
         this.dueDate = dueDate;
         this.isCompleted = isCompleted;
+    }
+
+    public void update(UpdateTodoRequest request) {
+        if(request.getTitle() != null)
+            this.title = request.getTitle();
+        if(request.getDueDate() != null)
+            this.dueDate = request.getDueDate();
+        if(request.isCompleted() != this.isCompleted)
+            this.isCompleted = request.isCompleted();
     }
 
 }
