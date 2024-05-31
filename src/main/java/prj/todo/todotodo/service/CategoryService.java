@@ -63,4 +63,13 @@ public class CategoryService {
 
         return categoryRepository.save(category);
     }
+
+    public void deleteCategory(Long id, String username) {
+        Member member = memberRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("해당 아이디를 가진 사용자가 존재하지 않습니다."));
+        Category category = categoryRepository.findByIdAndMemberId(id, member.getId())
+                .orElseThrow(() -> new CategoryNotFoundException("해당 카테고리를 찾을 수 없습니다"));
+
+        categoryRepository.delete(category);
+    }
 }
