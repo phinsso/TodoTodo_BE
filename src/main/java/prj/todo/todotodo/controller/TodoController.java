@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import prj.todo.todotodo.common.ControllerUtil;
 import prj.todo.todotodo.dto.CreateTodoRequest;
 import prj.todo.todotodo.dto.TodosByCategoryResponse;
 import prj.todo.todotodo.dto.UpdateTodoRequest;
@@ -21,8 +22,7 @@ public class TodoController {
 
     @PostMapping("/todo/todos")
     public ResponseEntity<String> createTodo(@RequestBody CreateTodoRequest request) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = authentication.getName();
+        String username = ControllerUtil.getAuthenticatedUsername();
         todoService.createTodo(request, username);
 
         return ResponseEntity.status(HttpStatus.CREATED).body("투두가 추가되었습니다.");
@@ -30,9 +30,7 @@ public class TodoController {
 
     @GetMapping("/todo/todos")
     public ResponseEntity<List<TodosByCategoryResponse>> getTodosByCategory() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = authentication.getName();
-
+        String username = ControllerUtil.getAuthenticatedUsername();
         List<TodosByCategoryResponse> todos = todoService.getTodosByCategory(username);
 
         return ResponseEntity.status(HttpStatus.OK).body(todos);
@@ -40,8 +38,7 @@ public class TodoController {
 
     @PatchMapping("/todo/todos/{id}")
     public ResponseEntity<String> updateTodo(@PathVariable("id") Long id, @RequestBody UpdateTodoRequest request) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = authentication.getName();
+        String username = ControllerUtil.getAuthenticatedUsername();
         todoService.updateTodo(id, request, username);
 
         return ResponseEntity.status(HttpStatus.OK).body("투두가 수정되었습니다.");
@@ -49,8 +46,7 @@ public class TodoController {
 
     @DeleteMapping("/todo/todos/{id}")
     public ResponseEntity<String> deleteTodo(@PathVariable("id") Long id) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();;
-        String username = authentication.getName();
+        String username = ControllerUtil.getAuthenticatedUsername();
         todoService.deleteTodo(id, username);
 
         return ResponseEntity.status(HttpStatus.OK).body("투두가 삭제되었습니다.");

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import prj.todo.todotodo.common.ControllerUtil;
 import prj.todo.todotodo.dto.RegisterMemberRequest;
 import prj.todo.todotodo.entity.Member;
 import prj.todo.todotodo.service.AuthService;
@@ -34,11 +35,10 @@ public class AuthApiController {
     @GetMapping("/session-id")
     public String getSessionId(HttpSession session) {
         String sessionId = session.getId();
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String currentUserName = authentication.getName();
+        String username = ControllerUtil.getAuthenticatedUsername();
 
         log.debug("Current session ID: {}", sessionId);
-        log.debug("Current session Name: {}", currentUserName);
-        return "Current session ID: " + sessionId + "   Name: " + currentUserName;
+        log.debug("Current session Name: {}", username);
+        return "Current session ID: " + sessionId + "   Name: " + username;
     }
 }

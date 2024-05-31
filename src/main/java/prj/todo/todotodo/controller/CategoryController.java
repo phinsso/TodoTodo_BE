@@ -7,10 +7,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import prj.todo.todotodo.common.ControllerUtil;
 import prj.todo.todotodo.dto.CategoryResponse;
 import prj.todo.todotodo.dto.CreateCategoryRequest;
 import prj.todo.todotodo.dto.UpdateCategoryRequest;
-import prj.todo.todotodo.entity.Category;
 import prj.todo.todotodo.service.CategoryService;
 
 import java.util.List;
@@ -25,8 +25,7 @@ public class CategoryController {
     // 카테고리 생성
     @PostMapping("/todo/categories")
     public ResponseEntity<String> createCategory(@RequestBody CreateCategoryRequest request) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = authentication.getName();
+        String username = ControllerUtil.getAuthenticatedUsername();
         categoryService.createCategory(request, username);
 
         return ResponseEntity.status(HttpStatus.CREATED).body("카테고리가 추가되었습니다.");
@@ -34,8 +33,7 @@ public class CategoryController {
 
     @GetMapping("/todo/categories")
     public ResponseEntity<List<CategoryResponse>> findAllCategories() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = authentication.getName();
+        String username = ControllerUtil.getAuthenticatedUsername();
         List<CategoryResponse> categories = categoryService.findAllCategories(username);
 
         return ResponseEntity.status(HttpStatus.OK).body(categories);
@@ -43,8 +41,7 @@ public class CategoryController {
 
     @PatchMapping("/todo/categories/{id}")
     public ResponseEntity<String> editCategory(@PathVariable("id") Long id, @RequestBody UpdateCategoryRequest request) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = authentication.getName();
+        String username = ControllerUtil.getAuthenticatedUsername();
         categoryService.updateCategory(id, request, username);
 
         return ResponseEntity.status(HttpStatus.OK).body("카테고리가 수정되었습니다");
@@ -52,8 +49,7 @@ public class CategoryController {
 
     @DeleteMapping("/todo/categories/{id}")
     public ResponseEntity<String> deleteCategory(@PathVariable("id") Long id) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = authentication.getName();
+        String username = ControllerUtil.getAuthenticatedUsername();
         categoryService.deleteCategory(id, username);
 
         return ResponseEntity.status(HttpStatus.OK).body("카테고리가 삭제되었습니다.");
