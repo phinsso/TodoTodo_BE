@@ -52,7 +52,7 @@ public class TodoService {
         Member member = memberRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("해당 아이디를 가진 사용자가 존재하지 않습니다."));
 
-        List<Category> categories = categoryRepository.findAllByMemberId(member.getId());
+        List<Category> categories = categoryRepository.findAllWithTodosByMemberId(member.getId());
 
         return categories.stream()
                 .map(TodosByCategoryResponse::new)
